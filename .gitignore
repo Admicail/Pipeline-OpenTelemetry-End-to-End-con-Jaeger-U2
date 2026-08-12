@@ -1,0 +1,30 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+.vs/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+*.tfvars
+!*.tfvars.example
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+
+# Environment / Secrets
+.env
+*.env.local
+**/secrets/
+
+# Logs
+*.log
