@@ -11,14 +11,6 @@ Pipeline de observabilidad end-to-end basado en OpenTelemetry que captura métri
 - AWS X-Ray: Trazas distribuidas (AWS)
 - Prometheus + Grafana: Métricas y dashboards
 
-## Integrantes
-
-| Nombre | Responsabilidad |
-|--------|----------------|
-| Esteban Garay | Instrumentación OTel, GCP/GKE, Arquitectura |
-| Carlos | AWS/ECS, OTel Collector AWS |
-| John | Benchmark k6, Análisis de overhead |
-
 ## Estructura del Repositorio
 
 - src/             Microservicios C#
