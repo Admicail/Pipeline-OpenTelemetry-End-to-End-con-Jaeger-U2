@@ -1,0 +1,50 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/project-54ecee29-e768-42f3-977/otel-registry/service-a
+  tag: v1
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  port: 8080
+  targetPort: 8080
+
+env:
+  - name: ASPNETCORE_URLS
+    value: "http://+:8080"
+  - name: SERVICE_B_URL
+    value: "http://service-b:8081"
+  - name: OTEL_SERVICE_NAME
+    value: "service-a"
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: "http://otel-collector:4317"
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
+serviceAccount:
+  create: false
+  name: ""
+  ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+livenessProbe: {}
+readinessProbe: {}
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
