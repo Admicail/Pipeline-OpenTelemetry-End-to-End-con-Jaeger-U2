@@ -1,0 +1,14 @@
+image:
+  repository: 426902159492.dkr.ecr.us-east-2.amazonaws.com/service-a
+  tag: v1
+  pullPolicy: Always
+
+env:
+  - name: ASPNETCORE_URLS
+    value: "http://+:8080"
+  - name: SERVICE_B_URL
+    value: "http://service-b.default.svc.cluster.local:8081"
+  - name: OTEL_SERVICE_NAME
+    value: "service-a"
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: "http://otel-collector.observability.svc.cluster.local:4317"

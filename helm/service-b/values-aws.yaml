@@ -1,0 +1,14 @@
+image:
+  repository: 426902159492.dkr.ecr.us-east-2.amazonaws.com/service-b
+  tag: v1
+  pullPolicy: Always
+
+env:
+  - name: ASPNETCORE_URLS
+    value: "http://+:8081"
+  - name: ConnectionStrings__DefaultConnection
+    value: "Host=postgres-postgresql.default.svc.cluster.local;Database=appdb;Username=postgres;Password=postgres"
+  - name: OTEL_SERVICE_NAME
+    value: "service-b"
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: "http://otel-collector.observability.svc.cluster.local:4317"
