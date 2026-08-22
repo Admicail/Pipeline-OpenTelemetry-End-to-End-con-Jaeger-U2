@@ -47,7 +47,7 @@ module "eks" {
   version = "~> 20.0"
 
   cluster_name    = var.cluster_name
-  cluster_version = "1.29"
+  cluster_version = "1.31"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -55,17 +55,15 @@ module "eks" {
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
 
-  eks_managed_node_groups = {
-    otel_nodes = {
-      min_size       = 2
-      max_size       = 3
-      desired_size   = 2
-      instance_types = ["t3.medium"]
-      capacity_type  = "ON_DEMAND"
-
-      labels = {
-        Project = "otel-pipeline"
-      }
+  fargate_profiles = {
+    default = {
+      name = "default"
+      selectors = [
+        { namespace = "default" },
+        { namespace = "kube-system" },
+        { namespace = "monitoring" },
+        { namespace = "observability" },
+      ]
     }
   }
 
