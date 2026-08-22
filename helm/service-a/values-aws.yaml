@@ -3,6 +3,15 @@ image:
   tag: v1
   pullPolicy: Always
 
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+
 env:
   - name: ASPNETCORE_URLS
     value: "http://+:8080"

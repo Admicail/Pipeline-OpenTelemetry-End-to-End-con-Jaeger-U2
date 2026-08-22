@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.service.targetPort | default .Values.service.port }}
       protocol: TCP
       name: http
   selector:
-    {{- include "service-b.selectorLabels" . | nindent 4 }}
+    app: {{ .Release.Name }}

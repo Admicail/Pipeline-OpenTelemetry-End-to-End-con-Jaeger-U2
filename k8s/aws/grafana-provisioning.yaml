@@ -1,0 +1,161 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: observability
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus.observability.svc.cluster.local:9090
+        isDefault: true
+        access: proxy
+        editable: false
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-provider
+  namespace: observability
+data:
+  provider.yaml: |
+    apiVersion: 1
+    providers:
+      - name: OTel Pipeline
+        type: file
+        folder: OTel Pipeline AWS
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-otel
+  namespace: observability
+data:
+  otel-pipeline.json: |
+    {
+      "title": "OTel Pipeline — AWS EKS",
+      "uid": "otel-aws-001",
+      "schemaVersion": 38,
+      "refresh": "10s",
+      "time": { "from": "now-30m", "to": "now" },
+      "panels": [
+        {
+          "id": 1,
+          "title": "SLI 1 — Tasa de Peticiones (req/s)",
+          "type": "timeseries",
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_request_duration_seconds_count[5m])) by (job)",
+              "legendFormat": "{{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "color": { "mode": "palette-classic" }
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "SLI 2 — Tasa de Errores (%)",
+          "type": "timeseries",
+          "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~\"5..\"}[5m])) / sum(rate(http_server_request_duration_seconds_count[5m])) * 100",
+              "legendFormat": "Error rate %"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "SLI 3 — Latencia p50 (ms)",
+          "type": "timeseries",
+          "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket[5m])) by (le, job)) * 1000",
+              "legendFormat": "p50 {{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "ms" }
+          }
+        },
+        {
+          "id": 4,
+          "title": "SLI 4 — Latencia p99 (ms)",
+          "type": "timeseries",
+          "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket[5m])) by (le, job)) * 1000",
+              "legendFormat": "p99 {{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "ms" }
+          }
+        },
+        {
+          "id": 5,
+          "title": "CPU — OTel Collector",
+          "type": "timeseries",
+          "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 },
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "rate(otelcol_process_cpu_seconds_total[5m])",
+              "legendFormat": "CPU seconds/s"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "s" }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Errores OTel Collector — Exports fallidos",
+          "type": "timeseries",
+          "gridPos": { "x": 12, "y": 16, "w": 12, "h": 8 },
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "rate(otelcol_exporter_send_failed_spans_total[5m])",
+              "legendFormat": "Spans fallidos/s"
+            },
+            {
+              "expr": "rate(otelcol_exporter_send_failed_metric_points_total[5m])",
+              "legendFormat": "Métricas fallidas/s"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "color": { "mode": "fixed", "fixedColor": "red" }
+            }
+          }
+        }
+      ]
+    }

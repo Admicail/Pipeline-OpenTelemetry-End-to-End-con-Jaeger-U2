@@ -29,14 +29,38 @@ data:
           - action: insert
             key: cloud.region
             value: us-east-2
+      filter/service-a:
+        logs:
+          include:
+            match_type: strict
+            resource_attributes:
+              - key: service.name
+                value: service-a
+      filter/service-b:
+        logs:
+          include:
+            match_type: strict
+            resource_attributes:
+              - key: service.name
+                value: service-b
 
     exporters:
       otlp/jaeger:
         endpoint: jaeger:4317
         tls:
           insecure: true
+      awsxray:
+        region: us-east-2
       prometheus:
         endpoint: "0.0.0.0:8889"
+      awscloudwatchlogs/service-a:
+        log_group_name: "/otel/service-a/logs"
+        log_stream_name: "service-a"
+        region: us-east-2
+      awscloudwatchlogs/service-b:
+        log_group_name: "/otel/service-b/logs"
+        log_stream_name: "service-b"
+        region: us-east-2
       debug:
         verbosity: detailed
 
@@ -45,15 +69,19 @@ data:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, resource, batch]
-          exporters: [otlp/jaeger]
+          exporters: [otlp/jaeger, awsxray]
         metrics:
           receivers: [otlp]
           processors: [memory_limiter, batch]
           exporters: [prometheus]
-        logs:
+        logs/service-a:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [debug]
+          processors: [memory_limiter, resource, filter/service-a, batch]
+          exporters: [awscloudwatchlogs/service-a, debug]
+        logs/service-b:
+          receivers: [otlp]
+          processors: [memory_limiter, resource, filter/service-b, batch]
+          exporters: [awscloudwatchlogs/service-b, debug]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -70,6 +98,7 @@ spec:
       labels:
         app: otel-collector
     spec:
+      serviceAccountName: otel-collector
       containers:
         - name: otel-collector
           image: otel/opentelemetry-collector-contrib:0.103.0
