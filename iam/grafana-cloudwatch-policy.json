@@ -1,0 +1,19 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:GetLogEvents",
+                "logs:FilterLogEvents",
+                "logs:StartQuery",
+                "logs:GetQueryResults",
+                "logs:StopQuery",
+                "logs:GetLogRecord"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

@@ -9,10 +9,34 @@ data:
     datasources:
       - name: Prometheus
         type: prometheus
+        uid: prometheus-uid
         url: http://prometheus.observability.svc.cluster.local:9090
         isDefault: true
         access: proxy
         editable: false
+
+      - name: Jaeger
+        type: jaeger
+        uid: jaeger-uid
+        url: http://jaeger.observability.svc.cluster.local:16686
+        access: proxy
+        editable: false
+
+      - name: CloudWatch Logs
+        type: cloudwatch
+        uid: cloudwatch-uid
+        access: proxy
+        editable: false
+        jsonData:
+          authType: default
+          defaultRegion: us-east-2
+          logsTimeout: 15m
+          derivedFields:
+            - matcherRegex: '"trace_id":"([a-f0-9]+)"'
+              name: TraceID
+              url: '${__value.raw}'
+              datasourceUid: jaeger-uid
+              urlDisplayLabel: Ver en Jaeger
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -120,18 +144,18 @@ data:
         },
         {
           "id": 5,
-          "title": "CPU — OTel Collector",
+          "title": "Memoria RSS — OTel Collector",
           "type": "timeseries",
           "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 },
           "datasource": "Prometheus",
           "targets": [
             {
-              "expr": "rate(otelcol_process_cpu_seconds_total[5m])",
-              "legendFormat": "CPU seconds/s"
+              "expr": "otelcol_process_memory_rss",
+              "legendFormat": "Memoria RSS (bytes)"
             }
           ],
           "fieldConfig": {
-            "defaults": { "unit": "s" }
+            "defaults": { "unit": "bytes" }
           }
         },
         {
