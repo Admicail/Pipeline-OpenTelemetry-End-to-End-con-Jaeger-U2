@@ -19,7 +19,7 @@ data:
 
       - job_name: 'service-a'
         static_configs:
-          - targets: ['service-a.default.svc.cluster.local:8080']
+          - targets: ['service-a.default.svc.cluster.local:80']
         metrics_path: /metrics
 
       - job_name: 'service-b'
