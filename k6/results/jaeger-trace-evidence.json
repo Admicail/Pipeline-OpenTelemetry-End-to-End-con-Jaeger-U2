@@ -1,0 +1,166 @@
+{
+    "jaeger_url":  "http://localhost:16686",
+    "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+    "services":  [
+                     "service-a",
+                     "service-b"
+                 ],
+    "spans":  [
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "d6052a8db04effc5",
+                      "operationName":  "validate-input",
+                      "service":  "service-a",
+                      "duration_us":  0,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "c1f383b112104568"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  null
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "baf66b6eed0b2b09",
+                      "operationName":  "business-logic",
+                      "service":  "service-b",
+                      "duration_us":  32415,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "1c87f6a2be12c3af"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  null
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "d2da966323b5c6b7",
+                      "operationName":  "save-to-database",
+                      "service":  "service-b",
+                      "duration_us":  6938,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "1c87f6a2be12c3af"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  null
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "1c87f6a2be12c3af",
+                      "operationName":  "process-request",
+                      "service":  "service-b",
+                      "duration_us":  39370,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "e4b5d58ee1c47cbb"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  null
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "e4b5d58ee1c47cbb",
+                      "operationName":  "GET process",
+                      "service":  "service-b",
+                      "duration_us":  39508,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "1ae19c2675e7c851"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  200
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "e63796a0f61ffcfa",
+                      "operationName":  "appdb",
+                      "service":  "service-b",
+                      "duration_us":  6799,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "d2da966323b5c6b7"
+                                         }
+                                     ],
+                      "db_system":  "postgresql",
+                      "http_status":  null
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "1ae19c2675e7c851",
+                      "operationName":  "GET",
+                      "service":  "service-a",
+                      "duration_us":  50394,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "6d865c84f5db63dd"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  200
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "6d865c84f5db63dd",
+                      "operationName":  "call-service-b",
+                      "service":  "service-a",
+                      "duration_us":  50439,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "c1f383b112104568"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  null
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "e89d339605e25ab5",
+                      "operationName":  "GET request",
+                      "service":  "service-a",
+                      "duration_us":  50525,
+                      "references":  [
+
+                                     ],
+                      "db_system":  null,
+                      "http_status":  200
+                  },
+                  {
+                      "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                      "spanID":  "c1f383b112104568",
+                      "operationName":  "handle-request",
+                      "service":  "service-a",
+                      "duration_us":  50471,
+                      "references":  [
+                                         {
+                                             "refType":  "CHILD_OF",
+                                             "traceID":  "3263ac1d7b740d9904a7f9daaaa421f7",
+                                             "spanID":  "e89d339605e25ab5"
+                                         }
+                                     ],
+                      "db_system":  null,
+                      "http_status":  null
+                  }
+              ]
+}

@@ -1,0 +1,65 @@
+{
+    "baseline":  {
+                     "mode":  "baseline",
+                     "avg_ms":  39.69741099938912,
+                     "p95_ms":  60.3662,
+                     "p99_ms":  80.82,
+                     "error_rate_pct":  0,
+                     "success_rate_pct":  100,
+                     "throughput_rps":  1194.9222235560164,
+                     "total_requests":  358529,
+                     "cpu_percent_avg":  244.36111111111114,
+                     "mem_mb_avg":  160.54666666666668,
+                     "service_stats":  [
+                                           {
+                                               "service":  "service-a",
+                                               "cpu_percent_avg":  84.697777777777773,
+                                               "mem_mb_avg":  60.880370370370372,
+                                               "samples":  27
+                                           },
+                                           {
+                                               "service":  "service-b",
+                                               "cpu_percent_avg":  159.66333333333336,
+                                               "mem_mb_avg":  99.6662962962963,
+                                               "samples":  27
+                                           }
+                                       ]
+                 },
+    "otel":  {
+                 "mode":  "otel",
+                 "avg_ms":  46.786537996936865,
+                 "p95_ms":  70.7634,
+                 "p99_ms":  119.49,
+                 "error_rate_pct":  0,
+                 "success_rate_pct":  100,
+                 "throughput_rps":  1013.981233029093,
+                 "total_requests":  304264,
+                 "cpu_percent_avg":  259.20846153846151,
+                 "mem_mb_avg":  241.97961538461536,
+                 "service_stats":  [
+                                       {
+                                           "service":  "service-a",
+                                           "cpu_percent_avg":  95.084230769230771,
+                                           "mem_mb_avg":  101.98346153846151,
+                                           "samples":  26
+                                       },
+                                       {
+                                           "service":  "service-b",
+                                           "cpu_percent_avg":  164.12423076923076,
+                                           "mem_mb_avg":  139.99615384615385,
+                                           "samples":  26
+                                       }
+                                   ]
+             },
+    "overhead":  {
+                     "avg_latency_pct":  17.857907654624718,
+                     "p95_latency_pct":  17.223545626526111,
+                     "p99_latency_pct":  47.847067557535269,
+                     "error_rate_pp":  0,
+                     "success_rate_pp":  0,
+                     "throughput_degradation_pct":  15.142491030793115,
+                     "cpu_pct":  6.0759874432717176,
+                     "mem_additional_mb":  81.432948717948676,
+                     "mem_pct":  50.72229178511877
+                 }
+}

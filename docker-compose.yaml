@@ -5,12 +5,13 @@ services:
   service-a:
     build: ./src/service-a
     ports:
-      - "8080:8080"
+      - "18080:8080"
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - SERVICE_B_URL=http://service-b:8081
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
       - OTEL_SERVICE_NAME=service-a
+      - OTEL_ENABLED=${OTEL_ENABLED:-true}
     depends_on:
       - service-b
       - otel-collector
@@ -18,15 +19,18 @@ services:
   service-b:
     build: ./src/service-b
     ports:
-      - "8081:8081"
+      - "18081:8081"
     environment:
       - ASPNETCORE_URLS=http://+:8081
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=appdb;Username=postgres;Password=postgres
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
       - OTEL_SERVICE_NAME=service-b
+      - OTEL_ENABLED=${OTEL_ENABLED:-true}
     depends_on:
-      - postgres
-      - otel-collector
+      postgres:
+        condition: service_healthy
+      otel-collector:
+        condition: service_started
 
   postgres:
     image: postgres:15-alpine
@@ -38,6 +42,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d appdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.103.0
